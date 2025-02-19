@@ -2,6 +2,7 @@ import {
   AI_NAME,
   OWNER_NAME,
   OWNER_DESCRIPTION,
+  AI_TONE,
   AI_ROLE,
 } from "@/configuration/identity";
 import { Chat, intentionTypeSchema } from "@/types";
