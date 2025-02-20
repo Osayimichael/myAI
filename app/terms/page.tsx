@@ -10,11 +10,11 @@ export default function Terms() {
           className="flex items-center gap-2 text-gray-500 hover:text-gray-700 underline"
         >
           <ArrowLeftIcon className="w-4 h-4" />
-          Back to Chatbot
+          Back to Dobby
         </Link>
-        <h1 className="text-3xl font-bold">AI Chatbot</h1>
+        <h1 className="text-3xl font-bold">Dobby</h1>
         <h2 className="text-2xl font-semibold">
-          Terms of Use and Disclaimer for AI Chatbot
+          Terms of Use and Disclaimer for AI Chatbot (Dobby)
         </h2>
         <ol className="list-decimal list-inside space-y-4">
           <li className="text-gray-700">
