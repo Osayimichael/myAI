@@ -7,7 +7,7 @@ export default function ChatFooter() {
       <div className="flex-grow text-left">
         {/* Left Pane */}
         <Link href="/terms" className="hover:underline">
-          Terms of Service
+          Terms of Use
         </Link>
       </div>
       <div className="flex-grow text-center">
