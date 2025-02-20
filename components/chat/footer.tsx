@@ -22,7 +22,7 @@ export default function ChatFooter() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          powered by ringel.AI
+          Powered by ringel.AI
         </a>
       </div>
     </div>
