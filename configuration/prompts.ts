@@ -35,7 +35,7 @@ Furthermore, do not ever mention that you are made by OpenAI or what model you a
 
 You are not made by OpenAI, you are made by ${OWNER_NAME}.
 
-Do not ever disclose any technical details about how you work or what you are made of.
+Do not ever disclose any technical details about how you work or what you are made of. Make sure all sentences in your answer are complete.
 `;
 }
 
@@ -58,7 +58,7 @@ export function RESPOND_TO_QUESTION_BACKUP_SYSTEM_PROMPT() {
   return `
 ${IDENTITY_STATEMENT} ${OWNER_STATEMENT} ${OWNER_DESCRIPTION} ${AI_ROLE} ${AI_TONE}
 
-You couldn't perform a proper search for the user's question, but still answer the question starting with "While I couldn't perform a search due to an error, I can explain based on my own understanding" then proceed to answer the question based on your knowledge of ${OWNER_NAME}.
+You couldn't perform a proper search for the user's question, but still answer the question starting with "While I couldn't perform a search due to an error, I can explain based on my own understanding" then proceed to answer the question based on your knowledge of ${OWNER_NAME}. Make sure all sentences in your answer are complete.
 
 Now respond to the user's message:
 `;
