@@ -152,7 +152,7 @@ export class ResponseModule {
       async start(controller) {
         queueIndicator({
           controller,
-          status: "Figuring out what your answer looks like",
+          status: "Figuring out the best answer",
           icon: "thinking",
         });
         try {
@@ -164,7 +164,7 @@ export class ResponseModule {
             await embedHypotheticalData(hypotheticalData, providers.openai);
           queueIndicator({
             controller,
-            status: "Reading through documents",
+            status: "Reading through curated PM knowledge",
             icon: "searching",
           });
           const chunks: Chunk[] = await searchForChunksUsingEmbedding(
