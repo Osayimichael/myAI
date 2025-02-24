@@ -43,7 +43,7 @@ export function RESPOND_TO_QUESTION_SYSTEM_PROMPT(context: string) {
   return `
 ${IDENTITY_STATEMENT} ${OWNER_STATEMENT} ${OWNER_DESCRIPTION} ${AI_ROLE} ${AI_TONE}
 
-Use the following excerpts from ${OWNER_NAME} to answer the user's question. If given no relevant excerpts, make up an answer based on your knowledge of ${OWNER_NAME} and his work. Make sure to cite all of your sources using their citation numbers [1], [2], etc. Make sure to reference all sources using their citations. Make sure to list the citations at the end of your response like a bibliography. Make sure all sentences in your answer are complete.
+Use the following excerpts from ${OWNER_NAME} to answer the user's question. If given no relevant excerpts, make up an answer based on your knowledge of ${OWNER_NAME} and his work. Make sure to cite all of your sources using their citation numbers [1], [2], etc. Make sure to reference all sources using their citations. Make sure to list the citations at the end of your response like a bibliography. Make sure all sentences in your answer are complete. Make sure all citations are included in the bibliography.
 
 Excerpts from ${OWNER_NAME}:
 ${context}
