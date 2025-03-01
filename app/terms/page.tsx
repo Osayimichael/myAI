@@ -10,16 +10,16 @@ export default function Terms() {
           className="flex items-center gap-2 text-gray-500 hover:text-gray-700 underline"
         >
           <ArrowLeftIcon className="w-4 h-4" />
-          Back to Dobby
+          Back to Mobby
         </Link>
         <h1 className="text-3xl font-bold">Dobby</h1>
         <h2 className="text-2xl font-semibold">
-          Terms of Use and Disclaimer for AI Chatbot (Dobby)
+          Terms of Use and Disclaimer for AI Chatbot (Mobby)
         </h2>
         <ol className="list-decimal list-inside space-y-4">
           <li className="text-gray-700">
             <span className="font-semibold">Acceptance of Terms:</span> By
-            accessing and using the Dobby ("Chatbot") provided by Osayi
+            accessing and using the Mobby ("Chatbot") provided by Osayi
             ("Provider"), you acknowledge that you have read, understood, and
             agreed to be bound by these Terms of Use. If you do not agree with
             these terms, do not use the Chatbot.
@@ -38,7 +38,7 @@ export default function Terms() {
             <span className="font-semibold">
               No Guarantees on Availability or Support:
             </span>{" "}
-            Osayi does not guarantee that Dobby will be available at all
+            Osayi does not guarantee that Mobby will be available at all
             times, be uninterrupted, secure, or error-free. No technical
             support, maintenance, or updates are guaranteed or required to be
             provided.
@@ -56,7 +56,7 @@ export default function Terms() {
             <span className="font-semibold">
               No Legal, Financial, or Professional Advice:
             </span>{" "}
-            Dobby is intended for informational and general purposes only.
+            Mobby is intended for informational and general purposes only.
             It does not constitute legal, financial, medical, or professional
             advice. Any reliance on the information provided by the Chatbot is
             at your own risk.
