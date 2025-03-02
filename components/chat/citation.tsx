@@ -19,10 +19,6 @@ export function CitationCircle({
 }) {
   const [open, setOpen] = useState(false);
 
-  // Ensure citation properties are always valid
-  const sourceUrl = citation.source_url?.trim() || "";
-  const sourceDescription = citation.source_description?.trim() || "";
-
   const isValidUrl = (url: string) => {
     try {
       new URL(url);
@@ -31,9 +27,8 @@ export function CitationCircle({
       return false;
     }
   };
-
-  const hasSourceUrl = isValidUrl(sourceUrl);
-  const hasSourceDescription = sourceDescription.length > 0;
+  const hasSourceUrl = isValidUrl(citation.source_url);
+  const hasSourceDescription = citation.source_description.trim() !== "";
 
   return (
     <Tooltip open={open} onOpenChange={setOpen}>
@@ -48,19 +43,17 @@ export function CitationCircle({
       <TooltipContent>
         <div className="bg-white p-2 rounded-md shadow-sm flex flex-col justify-center border-[1px] border-gray-200">
           <p>
-            {hasSourceUrl ? (
+            {hasSourceUrl && (
               <Link
-                href={sourceUrl}
+                href={citation.source_url}
                 target="_blank"
                 className="text-blue-500 hover:underline text-sm"
               >
-                {sourceDescription || sourceUrl}
+                {citation.source_description}
               </Link>
-            ) : hasSourceDescription ? (
-              sourceDescription
-            ) : (
-              EMPTY_CITATION_MESSAGE
             )}
+            {!hasSourceUrl && citation.source_description}
+            {!hasSourceUrl && !hasSourceDescription && EMPTY_CITATION_MESSAGE}
           </p>
         </div>
       </TooltipContent>
