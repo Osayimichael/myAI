@@ -12,7 +12,7 @@ export default function Terms() {
           <ArrowLeftIcon className="w-4 h-4" />
           Back to Mobby
         </Link>
-        <h1 className="text-3xl font-bold">Dobby</h1>
+        <h1 className="text-3xl font-bold">Mobby</h1>
         <h2 className="text-2xl font-semibold">
           Terms of Use and Disclaimer for AI Chatbot (Mobby)
         </h2>
