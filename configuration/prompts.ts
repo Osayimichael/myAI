@@ -56,8 +56,6 @@ If the excerpts given do not contain any information relevant to the user's ques
 
 Respond with the following tone: ${AI_TONE}
 
-Respond with the following tone: ${AI_TONE}
-
 Now respond to the user's message:
 `;
 }
