@@ -29,10 +29,11 @@ export function CitationCircle({
   return (
     <Tooltip
       title=""
-      isOpen={open}
+      open={open}
       onRequestClose={() => setOpen(false)}
       position="bottom"
-      trigger="click mouseenter" // NOTE: Ignore error, this is a valid trigger
+      // @ts-expect-error tippy docs allow this
+      trigger="mouseenter click"
       interactive={true}
       html={
         <div className="bg-white p-2 rounded-md shadow-sm flex flex-col justify-center border-[1px] border-gray-200">
@@ -51,13 +52,6 @@ export function CitationCircle({
           </p>
         </div>
       }
-    >
-      <div
-        className="bg-gray-50 rounded-full px-2 py-0.5 hover:cursor-pointer hover:scale-105 inline-block"
-        onClick={() => setOpen(true)}
-      >
-        <span>{number}</span>
-      </div>
-    </Tooltip>
+    ></Tooltip>
   );
 }
