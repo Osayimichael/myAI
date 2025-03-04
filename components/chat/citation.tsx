@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { Citation } from "@/types";
-import { Tooltip } from "react-tippy";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip";
 import Link from "next/link";
 import { EMPTY_CITATION_MESSAGE } from "@/configuration/ui";
 
@@ -27,14 +31,16 @@ export function CitationCircle({
   const hasSourceDescription = citation.source_description.trim() !== "";
 
   return (
-    <Tooltip
-      title=""
-      isOpen={open}
-      onRequestClose={() => setOpen(false)}
-      position="bottom"
-      trigger="click mouseenter" // NOTE: Ignore error, this is a valid trigger
-      interactive={true}
-      html={
+    <Tooltip open={open} onOpenChange={setOpen}>
+      <TooltipTrigger>
+        <div
+          className="bg-gray-50 rounded-full px-2 py-0.5 hover:cursor-pointer hover:scale-105 inline-block"
+          onClick={() => setOpen(true)}
+        >
+          <span>{number}</span>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent>
         <div className="bg-white p-2 rounded-md shadow-sm flex flex-col justify-center border-[1px] border-gray-200">
           <p>
             {hasSourceUrl && (
@@ -50,14 +56,7 @@ export function CitationCircle({
             {!hasSourceUrl && !hasSourceDescription && EMPTY_CITATION_MESSAGE}
           </p>
         </div>
-      }
-    >
-      <div
-        className="bg-gray-50 rounded-full px-2 py-0.5 hover:cursor-pointer hover:scale-105 inline-block"
-        onClick={() => setOpen(true)}
-      >
-        <span>{number}</span>
-      </div>
+      </TooltipContent>
     </Tooltip>
   );
 }
