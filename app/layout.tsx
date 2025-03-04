@@ -5,9 +5,9 @@ import "./globals.css";
 import { ErrorWrapper } from "./parts/error/error-wrapper";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
+const poppinsSans = localFont({
+  src: "./fonts/Poppins-Regular.woff",
+  variable: "--font-poppins-sans",
   weight: "100 900",
 });
 
@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <TooltipProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${poppinsSans.variable} ${geistMono.variable} antialiased`}
         >
           <ErrorWrapper>{children}</ErrorWrapper>
         </body>
