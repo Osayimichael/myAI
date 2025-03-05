@@ -43,7 +43,7 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 220 40% 8%; /* Deep Navy Blue */
+    --background: 220 40% 1%; /* Deep Navy Blue */
     --foreground: 220 30% 90%; /* Soft Light Gray-Blue */
     --card: 220 40% 10%;
     --card-foreground: 220 20% 85%;
