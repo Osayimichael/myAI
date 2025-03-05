@@ -17,7 +17,7 @@ body {
 @layer base {
   :root {
     --background: 220 40% 98%; /* Soft Light Blue */
-    --foreground: 220 25% 20%; /* Deep Slate Blue */
+    --foreground: 220 30% 15%; /* Deep Slate Blue */
     --card: 220 40% 98%;
     --card-foreground: 220 25% 20%;
     --popover: 220 40% 98%;
@@ -44,7 +44,7 @@ body {
   }
   .dark {
     --background: 220 40% 10%; /* Deep Navy Blue */
-    --foreground: 220 20% 85%; /* Soft Light Gray-Blue */
+    --foreground: 220 30% 90%; /* Soft Light Gray-Blue */
     --card: 220 40% 10%;
     --card-foreground: 220 20% 85%;
     --popover: 220 40% 10%;
