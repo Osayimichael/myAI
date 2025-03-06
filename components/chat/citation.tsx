@@ -15,7 +15,8 @@ export function CitationCircle({
 }) {
   const [open, setOpen] = useState(false);
 
-  const isValidUrl = (url: string) => {
+  const isValidUrl = (url?: string) => {
+    if (!url) return false;
     try {
       new URL(url);
       return true;
@@ -23,8 +24,9 @@ export function CitationCircle({
       return false;
     }
   };
+
   const hasSourceUrl = isValidUrl(citation.source_url);
-  const hasSourceDescription = citation.source_description.trim() !== "";
+  const hasSourceDescription = citation.source_description?.trim() !== "";
 
   return (
     <Tooltip
@@ -32,26 +34,32 @@ export function CitationCircle({
       open={open}
       onRequestClose={() => setOpen(false)}
       position="bottom"
-      // @ts-expect-error tippy docs allow this
       trigger="mouseenter click"
-      interactive={true}
+      interactive
       html={
-        <div className="bg-white p-2 rounded-md shadow-sm flex flex-col justify-center border-[1px] border-gray-200">
+        <div className="bg-white p-2 rounded-md shadow-sm flex flex-col justify-center border border-gray-200">
           <p>
-            {hasSourceUrl && (
+            {hasSourceUrl ? (
               <Link
                 href={citation.source_url}
                 target="_blank"
                 className="text-blue-500 hover:underline text-sm"
               >
-                {citation.source_description}
+                {citation.source_description || citation.source_url}
               </Link>
+            ) : (
+              citation.source_description || EMPTY_CITATION_MESSAGE
             )}
-            {!hasSourceUrl && citation.source_description}
-            {!hasSourceUrl && !hasSourceDescription && EMPTY_CITATION_MESSAGE}
           </p>
         </div>
       }
-    ></Tooltip>
+    >
+      <sup
+        onClick={() => setOpen(!open)}
+        className="ml-1 text-xs text-gray-500 cursor-pointer"
+      >
+        [{number}]
+      </sup>
+    </Tooltip>
   );
 }
