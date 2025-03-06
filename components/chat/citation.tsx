@@ -35,12 +35,12 @@ export function CitationCircle({
       <Tooltip>
         <TooltipTrigger asChild>
           <span
-            className="bg-gray-50 rounded-full px-2 py-0.5 hover:cursor-pointer hover:scale-105 inline-block text-sm"
+            className="bg-gray-100 rounded-full px-2 py-0.5 hover:cursor-pointer hover:scale-105 inline-block text-sm font-medium text-gray-700"
           >
-            [{number}]
+            {number} 
           </span>
         </TooltipTrigger>
-        <TooltipContent className="bg-white p-2 rounded-md shadow-sm flex flex-col justify-center border border-gray-200 max-w-xs">
+        <TooltipContent className="bg-white p-2 rounded-md shadow-md border border-gray-200 max-w-xs">
           <p className="text-sm text-gray-700">
             {hasSourceUrl ? (
               <Link
