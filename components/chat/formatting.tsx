@@ -4,15 +4,15 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
-import { preprocessLaTeX } from "@/utilities/formatting";
+import { preprocessLaTeX, renderCitations } from "@/utilities/formatting"; 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { CitationCircle } from "@/components/chat/citation"; 
+import { NormalComponents, SpecialComponents } from "react-markdown/lib/ast-to-react";
 
 export function Formatting({ message }: { message: DisplayMessage }) {
   const processedContent = preprocessLaTeX(message.content);
 
-  const components = {
-    code: ({ children, className, node, ...rest }: any) => {
+  const components: Partial<NormalComponents & SpecialComponents> = {
+    code: ({ children, className, node, ...rest }) => {
       const match = /language-(\w+)/.exec(className || "");
       return match ? (
         <SyntaxHighlighter
@@ -28,14 +28,7 @@ export function Formatting({ message }: { message: DisplayMessage }) {
         </code>
       );
     },
-    p: ({ children }: { children: React.ReactNode }) => (
-      <p className="mb-2">
-        {children}
-        {message.citations?.map((citation, index) => (
-          <CitationCircle key={index} number={index + 1} citation={citation} />
-        ))}
-      </p>
-    ),
+    p: (props) => renderCitations(props.children, message.citations), 
   };
 
   return (
