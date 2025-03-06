@@ -35,7 +35,7 @@ export function CitationCircle({
       <Tooltip>
         <TooltipTrigger asChild>
           <span
-            className="bg-gray-100 rounded-full px-2 py-0.5 hover:cursor-pointer hover:scale-105 inline-block text-sm font-medium text-gray-700"
+            className="bg-gray-50 rounded-full px-2 py-0.5 hover:cursor-pointer hover:scale-105 inline-block text-sm font-medium text-gray-900"
           >
             {number} 
           </span>
