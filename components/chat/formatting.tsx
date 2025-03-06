@@ -1,17 +1,16 @@
 import { DisplayMessage } from "@/types";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { Components } from "react-markdown"; // 
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import { preprocessLaTeX, renderCitations } from "@/utilities/formatting"; 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { NormalComponents, SpecialComponents } from "react-markdown/lib/ast-to-react";
 
 export function Formatting({ message }: { message: DisplayMessage }) {
   const processedContent = preprocessLaTeX(message.content);
 
-  const components: Partial<NormalComponents & SpecialComponents> = {
+  const components: Partial<Components> = {  
     code: ({ children, className, node, ...rest }) => {
       const match = /language-(\w+)/.exec(className || "");
       return match ? (
