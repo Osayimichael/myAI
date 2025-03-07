@@ -172,9 +172,5 @@ export function renderCitations(
     return node;
   };
 
-  return React.isValidElement(children) && children.type === "p" ? (
-  processChildren(children)
-) : (
-  <p className="text-base">{processChildren(children)}</p>
-);
+  return <p className="text-base">{processChildren(children)}</p>;
 }
