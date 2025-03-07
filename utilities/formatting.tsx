@@ -172,5 +172,5 @@ export function renderCitations(
     return node;
   };
 
-  return <p className="text-base">{processChildren(children)}</p>;
+  return processChildren(children);
 }
