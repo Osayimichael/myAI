@@ -7,7 +7,7 @@ import { AI_NAME } from "@/configuration/identity";
 export const AILogo = () => (
   <div className="relative w-12 h-12">
     <Image src="/ai-logo.png" alt={AI_NAME} width={48} height={48} />
-    <div className="w-2 h-2 rounded-full bg-green-500 absolute -bottom-0 -right-0"></div>
+    <div className="w-2 h-2 rounded-full bg-green-500 absolute -bottom-0.5 -right-0.5"></div>
   </div>
 );
 
@@ -19,12 +19,15 @@ export default function ChatHeader({ clearMessages }: { clearMessages: () => voi
         <h1 className="text-lg font-semibold text-gray-900">{CHAT_HEADER}</h1>
       </div>
       <Button
-        onClick={clearMessages}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-200 text-gray-700"
-      >
-        <EraserIcon className="w-4 h-4 text-gray-900" />
-        {CLEAR_BUTTON_TEXT}
-      </Button>
+  onClick={clearMessages}
+  className="flex items-center gap-2 px-3 py-2 text-sm font-medium 
+    text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm 
+    hover:bg-gray-200 dark:bg-blue-500 dark:text-white dark:border-transparent 
+    dark:hover:bg-blue-600 transition-colors"
+>
+  <EraserIcon className="w-4 h-4 text-gray-900 dark:text-white" />
+  {CLEAR_BUTTON_TEXT}
+</Button>
     </header>
   );
 }
