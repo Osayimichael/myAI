@@ -40,8 +40,8 @@ export function CitationCircle({
             {number} 
           </span>
         </TooltipTrigger>
-        <TooltipContent className="bg-white p-2 rounded-md shadow-md border border-gray-200 max-w-xs">
-          <p className="text-sm text-gray-700">
+        <TooltipContent className="p-2 rounded-md shadow-md border border-gray-100 max-w-xs dark:bg-blue-600 dark:text-white bg-white">
+          <p className="text-sm text-gray-900">
             {hasSourceUrl ? (
               <Link
                 href={citation.source_url}
