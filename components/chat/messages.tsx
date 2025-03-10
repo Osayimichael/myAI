@@ -6,7 +6,7 @@ import { LoadingIndicator } from "@/types";
 import Loading from "./loading";
 import { AI_NAME } from "@/configuration/identity";
 import { useRef } from "react";
-import ScrollToBottom from "./scrolltobottom"; // Import the scroll button
+import ScrollToBottom from "./ScrollToBottom"; // Import the scroll button
 
 function AILogo() {
   return (
