@@ -9,8 +9,7 @@ const ScrollToBottom: React.FC<{ chatContainerRef: React.RefObject<HTMLDivElemen
     if (!chatContainer) return;
 
     const handleScroll = () => {
-      const isAtBottom =
-        chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 10;
+      const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 10;
       setIsVisible(!isAtBottom);
     };
 
@@ -23,13 +22,13 @@ const ScrollToBottom: React.FC<{ chatContainerRef: React.RefObject<HTMLDivElemen
     setIsVisible(false); // Hide button after clicking
   };
 
-  // Ensure the button does NOT take up space in layout
-  if (!isVisible) return null;
+  if (!isVisible) return null; // Hide if already at the bottom
 
   return (
     <button
-      className="fixed bottom-16 right-4 w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 text-black shadow-lg hover:bg-gray-300 transition-opacity"
+      className="absolute bottom-4 right-4 w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 text-black shadow-lg hover:bg-gray-300 transition-opacity"
       onClick={scrollToBottom}
+      style={{ zIndex: 10 }} // Ensures it's above the footer
     >
       <ChevronDown size={24} />
     </button>
