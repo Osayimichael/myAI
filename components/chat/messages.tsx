@@ -5,8 +5,6 @@ import { Formatting } from "./formatting";
 import { LoadingIndicator } from "@/types";
 import Loading from "./loading";
 import { AI_NAME } from "@/configuration/identity";
-import { useRef, useEffect } from "react";
-import ScrollToBottom from "./ScrollToBottom"; // Correct case-sensitive import
 
 function AILogo() {
   return (
@@ -70,52 +68,39 @@ export default function ChatMessages({
   messages: DisplayMessage[];
   indicatorState: LoadingIndicator[];
 }) {
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-
-  // Auto-scroll to bottom when new messages appear
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: "smooth" });
-    }
-  }, [messages]);
-
   const showLoading =
     indicatorState.length > 0 &&
     messages.length > 0 &&
     messages[messages.length - 1].role === "user";
 
   return (
-    <div className="relative w-full h-full flex flex-col">
-      {/* Scrollable Chat Area */}
-      <div
-        ref={chatContainerRef}
-        className="flex flex-col flex-1 overflow-y-auto px-4 pt-16 pb-24" 
-      >
-        {messages.length === 0 ? (
-          <EmptyMessages />
-        ) : (
-          messages.map((message, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-            >
-              {message.role === "user" ? (
-                <UserMessage message={message} />
-              ) : (
-                <AssistantMessage message={message} />
-              )}
-            </motion.div>
-          ))
-        )}
-        {showLoading && <Loading indicatorState={indicatorState} />}
-      </div>
-
-      {/* Scroll To Bottom Button (Absolute Position) */}
-      <div className="absolute bottom-4 right-4">
-        <ScrollToBottom chatContainerRef={chatContainerRef} />
-      </div>
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col flex-1 p-1 gap-3"
+    >
+      <div className="h-[60px]"></div>
+      {messages.length === 0 ? (
+        <EmptyMessages />
+      ) : (
+        messages.map((message, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+          >
+            {message.role === "user" ? (
+              <UserMessage message={message} />
+            ) : (
+              <AssistantMessage message={message} />
+            )}
+          </motion.div>
+        ))
+      )}
+      {showLoading && <Loading indicatorState={indicatorState} />}
+      <div className="h-[225px]"></div>
+    </motion.div>
   );
 }
