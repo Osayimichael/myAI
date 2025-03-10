@@ -5,8 +5,8 @@ import { Formatting } from "./formatting";
 import { LoadingIndicator } from "@/types";
 import Loading from "./loading";
 import { AI_NAME } from "@/configuration/identity";
-import { useRef } from "react";
-import ScrollToBottom from "./ScrollToBottom"; // Import the scroll button
+import { useRef, useEffect } from "react";
+import ScrollToBottom from "./ScrollToBottom"; // Ensure correct casing
 
 function AILogo() {
   return (
@@ -72,43 +72,47 @@ export default function ChatMessages({
 }) {
   const chatContainerRef = useRef<HTMLDivElement>(null); // Ref for scrolling
 
+  // Scroll to the bottom when new messages appear
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: "smooth" });
+    }
+  }, [messages]);
+
   const showLoading =
     indicatorState.length > 0 &&
     messages.length > 0 &&
     messages[messages.length - 1].role === "user";
 
   return (
-    <motion.div
-      ref={chatContainerRef} // Attach ref to the chat container
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="relative flex flex-col flex-1 p-1 gap-3 overflow-y-auto"
-    >
-      <div className="h-[60px]"></div>
-      {messages.length === 0 ? (
-        <EmptyMessages />
-      ) : (
-        messages.map((message, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-          >
-            {message.role === "user" ? (
-              <UserMessage message={message} />
-            ) : (
-              <AssistantMessage message={message} />
-            )}
-          </motion.div>
-        ))
-      )}
-      {showLoading && <Loading indicatorState={indicatorState} />}
-      <div className="h-[225px]"></div>
+    <div className="relative w-full h-full flex flex-col"> {/* Keep full chat size */}
+      <div
+        ref={chatContainerRef}
+        className="flex flex-col flex-1 overflow-y-auto p-4 pb-20" // Ensure scroll only affects messages
+      >
+        {messages.length === 0 ? (
+          <EmptyMessages />
+        ) : (
+          messages.map((message, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              {message.role === "user" ? (
+                <UserMessage message={message} />
+              ) : (
+                <AssistantMessage message={message} />
+              )}
+            </motion.div>
+          ))
+        )}
+        {showLoading && <Loading indicatorState={indicatorState} />}
+      </div>
 
-      {/* Scroll to Bottom Button */}
+      {/* Scroll to Bottom Button - Fixed at bottom-right */}
       <ScrollToBottom chatContainerRef={chatContainerRef} />
-    </motion.div>
+    </div>
   );
 }
