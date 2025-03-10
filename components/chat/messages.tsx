@@ -6,7 +6,7 @@ import { LoadingIndicator } from "@/types";
 import Loading from "./loading";
 import { AI_NAME } from "@/configuration/identity";
 import { useRef, useEffect } from "react";
-import ScrollToBottom from "./ScrollToBottom"; // Ensure correct casing
+import ScrollToBottom from "./ScrollToBottom"; // Correct case-sensitive import
 
 function AILogo() {
   return (
@@ -70,9 +70,9 @@ export default function ChatMessages({
   messages: DisplayMessage[];
   indicatorState: LoadingIndicator[];
 }) {
-  const chatContainerRef = useRef<HTMLDivElement>(null); // Ref for scrolling
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to the bottom when new messages appear
+  // Auto-scroll to bottom when new messages appear
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: "smooth" });
@@ -85,10 +85,11 @@ export default function ChatMessages({
     messages[messages.length - 1].role === "user";
 
   return (
-    <div className="relative w-full h-full flex flex-col"> {/* Keep full chat size */}
+    <div className="relative w-full h-full flex flex-col">
+      {/* Scrollable Chat Area */}
       <div
         ref={chatContainerRef}
-        className="flex flex-col flex-1 overflow-y-auto p-4 pb-20" // Ensure scroll only affects messages
+        className="flex flex-col flex-1 overflow-y-auto px-4 pt-16 pb-24" 
       >
         {messages.length === 0 ? (
           <EmptyMessages />
@@ -111,8 +112,10 @@ export default function ChatMessages({
         {showLoading && <Loading indicatorState={indicatorState} />}
       </div>
 
-      {/* Scroll to Bottom Button - Fixed at bottom-right */}
-      <ScrollToBottom chatContainerRef={chatContainerRef} />
+      {/* Scroll To Bottom Button (Absolute Position) */}
+      <div className="absolute bottom-4 right-4">
+        <ScrollToBottom chatContainerRef={chatContainerRef} />
+      </div>
     </div>
   );
 }
