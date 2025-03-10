@@ -5,6 +5,8 @@ import { Formatting } from "./formatting";
 import { LoadingIndicator } from "@/types";
 import Loading from "./loading";
 import { AI_NAME } from "@/configuration/identity";
+import { useRef } from "react";
+import ScrollToBottom from "./scrolltobottom"; // Import the scroll button
 
 function AILogo() {
   return (
@@ -68,6 +70,8 @@ export default function ChatMessages({
   messages: DisplayMessage[];
   indicatorState: LoadingIndicator[];
 }) {
+  const chatContainerRef = useRef<HTMLDivElement>(null); // Ref for scrolling
+
   const showLoading =
     indicatorState.length > 0 &&
     messages.length > 0 &&
@@ -75,10 +79,11 @@ export default function ChatMessages({
 
   return (
     <motion.div
+      ref={chatContainerRef} // Attach ref to the chat container
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col flex-1 p-1 gap-3"
+      className="relative flex flex-col flex-1 p-1 gap-3 overflow-y-auto"
     >
       <div className="h-[60px]"></div>
       {messages.length === 0 ? (
@@ -101,6 +106,9 @@ export default function ChatMessages({
       )}
       {showLoading && <Loading indicatorState={indicatorState} />}
       <div className="h-[225px]"></div>
+
+      {/* Scroll to Bottom Button */}
+      <ScrollToBottom chatContainerRef={chatContainerRef} />
     </motion.div>
   );
 }
