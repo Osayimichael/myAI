@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { cn } from "@/lib/utils"; // Utility function for conditional classNames
-import { ChevronDown } from "lucide-react"; // Icon library (ensure lucide-react is installed)
+import React, { useState, useEffect } from "react";
+import { ChevronDown } from "lucide-react"; // Ensure lucide-react is installed
 
 const ScrollToBottom: React.FC<{ chatContainerRef: React.RefObject<HTMLDivElement> }> = ({ chatContainerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -10,7 +9,8 @@ const ScrollToBottom: React.FC<{ chatContainerRef: React.RefObject<HTMLDivElemen
     if (!chatContainer) return;
 
     const handleScroll = () => {
-      const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 10;
+      const isAtBottom =
+        chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 10;
       setIsVisible(!isAtBottom);
     };
 
@@ -20,14 +20,15 @@ const ScrollToBottom: React.FC<{ chatContainerRef: React.RefObject<HTMLDivElemen
 
   const scrollToBottom = () => {
     chatContainerRef.current?.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: "smooth" });
-    setIsVisible(false); // Hide button after click
+    setIsVisible(false); // Hide button after clicking
   };
 
-  if (!isVisible) return null; // Hide button if not needed
+  // Ensure the button does NOT take up space in layout
+  if (!isVisible) return null;
 
   return (
     <button
-      className="fixed bottom-16 right-4 flex items-center justify-center w-12 h-12 rounded-full bg-gray-200 text-black shadow-lg transition-opacity hover:bg-gray-300"
+      className="fixed bottom-16 right-4 w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 text-black shadow-lg hover:bg-gray-300 transition-opacity"
       onClick={scrollToBottom}
     >
       <ChevronDown size={24} />
