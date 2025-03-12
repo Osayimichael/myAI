@@ -113,7 +113,7 @@ export function Citations({
         // Add the citation component
         parts.push(
           <CitationCircle 
-            key={citation-${match.index}} 
+            key={`citation-${match.index}`} 
             number={citationNumber} 
             citation={citations[citationNumber - 1]} 
           />
