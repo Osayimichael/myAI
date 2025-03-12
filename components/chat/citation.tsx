@@ -14,7 +14,7 @@ export function CitationCircle({
   citation: Citation;
 }) {
   const [open, setOpen] = useState(false);
-
+  
   const isValidUrl = (url?: string) => {
     if (!url) return false;
     try {
@@ -24,9 +24,10 @@ export function CitationCircle({
       return false;
     }
   };
-
+  
   const hasSourceUrl = isValidUrl(citation.source_url);
-
+  const hasSourceDescription = citation.source_description?.trim() !== "";
+  
   return (
     <Tooltip.Provider delayDuration={200}>
       <Tooltip.Root open={open} onOpenChange={setOpen}>
@@ -76,74 +77,81 @@ export function Citations({
   isLoading?: boolean;
 }) {
   const [processedContent, setProcessedContent] = useState<React.ReactNode>("");
-
+  
   useEffect(() => {
-    // If still loading or there are no citations, show the original message
-    if (isLoading || !citations || citations.length === 0) {
+    if (!message) {
+      setProcessedContent("");
+      return;
+    }
+    
+    // If no citations or empty message, just show the message
+    if (!citations || citations.length === 0) {
       setProcessedContent(message);
       return;
     }
-
-    // Use a regex to find markers like [1], [2], etc.
+    
+    // Parse the message to find citation markers [1], [2], etc.
     const citationRegex = /\[(\d+)\]/g;
     let lastIndex = 0;
     const parts: React.ReactNode[] = [];
     let match;
-    // This counter will be used to assign valid citation indices sequentially.
-    let validCount = 0;
+    
+    // Clone the message string
     const messageText = String(message);
-
+    
+    // Find all citation references in the message
     while ((match = citationRegex.exec(messageText)) !== null) {
-      // Add text before the marker
-      if (match.index > lastIndex) {
-        parts.push(messageText.substring(lastIndex, match.index));
-      }
-
-      // If there's an available citation, insert it with a sequential number
-      if (validCount < citations.length) {
+      const citationNumber = parseInt(match[1]);
+      
+      // Only process if the citation number is valid
+      if (citationNumber > 0 && citationNumber <= citations.length) {
+        // Add text before the citation
+        if (match.index > lastIndex) {
+          parts.push(messageText.substring(lastIndex, match.index));
+        }
+        
+        // Add the citation component
         parts.push(
-          <CitationCircle
-            key={`citation-${validCount}`}
-            number={validCount + 1}
-            citation={citations[validCount]}
+          <CitationCircle 
+            key={`citation-${match.index}`} 
+            number={citationNumber} 
+            citation={citations[citationNumber - 1]} 
           />
         );
-        validCount++;
+        
+        lastIndex = match.index + match[0].length;
       }
-      // Otherwise, skip the marker (i.e. do not output any fallback text)
-      lastIndex = match.index + match[0].length;
     }
-    // Append any remaining text after the last marker.
+    
+    // Add any remaining text
     if (lastIndex < messageText.length) {
       parts.push(messageText.substring(lastIndex));
     }
-
+    
     setProcessedContent(parts.length > 0 ? parts : message);
-  }, [message, citations, isLoading]);
-
+  }, [message, citations]);
+  
   return (
     <div className="citations-container">
       {isLoading ? (
         <div className="flex items-center">
           <span className="mr-2">{message}</span>
-          <span className="text-sm text-gray-500 animate-pulse">
-            Loading citations...
-          </span>
+          <span className="text-sm text-gray-500 animate-pulse">Loading citations...</span>
         </div>
       ) : (
         <div>{processedContent}</div>
       )}
-
+      
       {/* Display all citations at the bottom when no citation markers in text */}
       {citations.length > 0 && !message.match(/\[\d+\]/) && (
         <div className="mt-4 pt-2 border-t border-gray-200">
           <p className="text-sm text-gray-500 mb-2">Sources:</p>
           <div className="flex flex-wrap gap-2">
             {citations.map((citation, index) => (
-              <CitationCircle
-                key={`bottom-citation-${index}`}
-                number={index + 1}
-                citation={citation}
+              <CitationCircle 
+                key={`bottom-citation-${index}`} 
+                number={index + 1} 
+                citation={citation} 
               />
             ))}
           </div>
@@ -158,24 +166,24 @@ export function useCitations(messageId: string, streamDuration: number = 300) {
   const [citations, setCitations] = useState<Citation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-
+  
   useEffect(() => {
     if (!messageId) return;
-
+    
     let timeoutId: ReturnType<typeof setTimeout>;
     let retryCount = 0;
     const maxRetries = 3;
-
+    
     const fetchCitations = async () => {
       try {
         setIsLoading(true);
-
+        
         // Fetch citations for this specific message
         const response = await fetch(`/api/citations?messageId=${messageId}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch citations");
+          throw new Error('Failed to fetch citations');
         }
-
+        
         const data = await response.json();
         if (data.citations && data.citations.length > 0) {
           setCitations(data.citations);
@@ -184,44 +192,41 @@ export function useCitations(messageId: string, streamDuration: number = 300) {
         return false; // No citations yet
       } catch (err) {
         if (retryCount >= maxRetries) {
-          setError(err instanceof Error ? err : new Error("Unknown error"));
-          console.error("Error fetching citations:", err);
+          setError(err instanceof Error ? err : new Error('Unknown error'));
+          console.error('Error fetching citations:', err);
         }
         return false;
       } finally {
         setIsLoading(false);
       }
     };
-
+    
     // Initial fetch
     fetchCitations();
-
+    
     // Set up polling if citations aren't available immediately
     if (streamDuration > 0) {
       const checkAndFetch = async () => {
         const found = await fetchCitations();
         retryCount++;
-
+        
         // If citations found or max retries reached, stop polling
         if (found || retryCount >= maxRetries) return;
-
+        
         // Otherwise, set up next poll with exponential backoff
         const delay = Math.min(2000 * Math.pow(2, retryCount), 30000);
         timeoutId = setTimeout(checkAndFetch, delay);
       };
-
+      
       // Start polling after initial stream delay
-      timeoutId = setTimeout(
-        checkAndFetch,
-        Math.min((streamDuration * 1000) / 3, 10000)
-      );
+      timeoutId = setTimeout(checkAndFetch, Math.min(streamDuration * 1000 / 3, 10000));
     }
-
+    
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, [messageId, streamDuration]);
-
+  
   return { citations, isLoading, error };
 }
 
@@ -236,8 +241,12 @@ export function MessageWithCitations({
   streamDuration?: number;
 }) {
   const { citations, isLoading } = useCitations(messageId, streamDuration);
-
+  
   return (
-    <Citations message={message} citations={citations} isLoading={isLoading} />
+    <Citations 
+      message={message} 
+      citations={citations} 
+      isLoading={isLoading} 
+    />
   );
 }
