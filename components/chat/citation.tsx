@@ -93,7 +93,7 @@ export function Citations({
     // Parse the message to find citation markers [1], [2], etc.
     const citationRegex = /\[(\d+)\]/g;
     let lastIndex = 0;
-    let parts: React.ReactNode[] = [];
+    const parts: React.ReactNode[] = [];
     let match;
     
     // Clone the message string
