@@ -170,7 +170,7 @@ export function useCitations(messageId: string, streamDuration: number = 300) {
   useEffect(() => {
     if (!messageId) return;
     
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
     let retryCount = 0;
     const maxRetries = 3;
     
