@@ -149,7 +149,7 @@ export function Citations({
           <div className="flex flex-wrap gap-2">
             {citations.map((citation, index) => (
               <CitationCircle 
-                key={bottom-citation-${index}} 
+                key={`bottom-citation-${index}`} 
                 number={index + 1} 
                 citation={citation} 
               />
@@ -179,7 +179,7 @@ export function useCitations(messageId: string, streamDuration: number = 300) {
         setIsLoading(true);
         
         // Fetch citations for this specific message
-        const response = await fetch(/api/citations?messageId=${messageId});
+        const response = await fetch(`/api/citations?messageId=${messageId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch citations');
         }
