@@ -1,4 +1,3 @@
-import React from 'react';
 import { DisplayMessage } from "@/types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -10,7 +9,6 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 export function Formatting({ message }: { message: DisplayMessage }) {
   const processedContent = preprocessLaTeX(message.content);
-
   const components = {
     code: ({ children, className, node, ...rest }: any) => {
       const match = /language-(\w+)/.exec(className || "");
@@ -29,35 +27,9 @@ export function Formatting({ message }: { message: DisplayMessage }) {
       );
     },
     p: ({ children }: { children: React.ReactNode }) => {
-      // Process paragraph text to fix list headings with colons
-      if (React.isValidElement(children)) {
-        const content = children.props.children;
-        if (typeof content === 'string' && content.includes('\n:')) {
-          // Replace newline before colon with just the colon
-          const fixedContent = content.replace(/\n\s*:/g, ':');
-          return <p>{renderCitations(fixedContent, message.citations)}</p>;
-        }
-      }
-      return <p>{renderCitations(children, message.citations)}</p>;
-    },
-    strong: ({ children }: { children: React.ReactNode }) => {
-      return (
-        <span className="font-bold inline">
-          {renderCitations(children, message.citations)}
-        </span>
-      );
-    },
-    li: ({ children }: { children: React.ReactNode }) => {
-      return <li>{renderCitations(children, message.citations)}</li>;
-    },
-    ol: ({ children }: { children: React.ReactNode }) => {
-      return <ol>{renderCitations(children, message.citations)}</ol>;
-    },
-    ul: ({ children }: { children: React.ReactNode }) => {
-      return <ul>{renderCitations(children, message.citations)}</ul>;
+      return renderCitations(children, message.citations);
     },
   };
-
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm, remarkMath]}
