@@ -7,41 +7,9 @@ import "katex/dist/katex.min.css";
 import { preprocessLaTeX, renderCitations } from "@/utilities/formatting";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
-// Custom remark plugin to recursively merge colon-only paragraphs
-function remarkMergeColon() {
-  return (tree: any) => {
-    function mergeColonInChildren(nodes: any[]) {
-      // Loop backwards to safely splice out nodes as needed
-      for (let i = nodes.length - 1; i >= 0; i--) {
-        const node = nodes[i];
-        if (
-          node.type === "paragraph" &&
-          node.children &&
-          node.children.length === 1 &&
-          node.children[0].type === "text" &&
-          node.children[0].value.trim() === ":"
-        ) {
-          if (i > 0 && nodes[i - 1].type === "paragraph") {
-            // Append the colon to the previous paragraph
-            nodes[i - 1].children.push({ type: "text", value: ":" });
-            // Remove the colon-only paragraph
-            nodes.splice(i, 1);
-            // Continue without further processing of this index
-            continue;
-          }
-        }
-        // If the current node has children, recursively process them
-        if (node.children && Array.isArray(node.children)) {
-          mergeColonInChildren(node.children);
-        }
-      }
-    }
-    mergeColonInChildren(tree.children);
-  };
-}
-
 export function Formatting({ message }: { message: DisplayMessage }) {
   const processedContent = preprocessLaTeX(message.content);
+
   const components = {
     code: ({ children, className, node, ...rest }: any) => {
       const match = /language-(\w+)/.exec(className || "");
@@ -60,7 +28,16 @@ export function Formatting({ message }: { message: DisplayMessage }) {
       );
     },
     p: ({ children }: { children: React.ReactNode }) => {
-      return renderCitations(children, message.citations);
+      // Process paragraph text to fix list headings with colons
+      if (React.isValidElement(children)) {
+        const content = children.props.children;
+        if (typeof content === 'string' && content.includes('\n:')) {
+          // Replace newline before colon with just the colon
+          const fixedContent = content.replace(/\n\s*:/g, ':');
+          return <p>{renderCitations(fixedContent, message.citations)}</p>;
+        }
+      }
+      return <p>{renderCitations(children, message.citations)}</p>;
     },
     strong: ({ children }: { children: React.ReactNode }) => {
       return (
@@ -82,7 +59,7 @@ export function Formatting({ message }: { message: DisplayMessage }) {
 
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm, remarkMath, remarkMergeColon]}
+      remarkPlugins={[remarkGfm, remarkMath]}
       rehypePlugins={[rehypeKatex]}
       components={components as any}
       className="gap-3 flex flex-col"
