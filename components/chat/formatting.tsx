@@ -7,30 +7,36 @@ import "katex/dist/katex.min.css";
 import { preprocessLaTeX, renderCitations } from "@/utilities/formatting";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
-// Custom remark plugin to merge paragraphs that only contain a colon
+// Custom remark plugin to recursively merge colon-only paragraphs
 function remarkMergeColon() {
   return (tree: any) => {
-    const { children } = tree;
-    // Iterate backwards over the paragraphs so we can merge safely
-    for (let i = children.length - 1; i > 0; i--) {
-      const node = children[i];
-      if (
-        node.type === "paragraph" &&
-        node.children &&
-        node.children.length === 1 &&
-        node.children[0].type === "text" &&
-        node.children[0].value.trim() === ":"
-      ) {
-        // Merge with the previous paragraph
-        const previous = children[i - 1];
-        if (previous.type === "paragraph") {
-          // Append the colon to the last text node of the previous paragraph
-          previous.children.push({ type: "text", value: ":" });
-          // Remove the current colon-only paragraph
-          children.splice(i, 1);
+    function mergeColonInChildren(nodes: any[]) {
+      // Loop backwards to safely splice out nodes as needed
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        const node = nodes[i];
+        if (
+          node.type === "paragraph" &&
+          node.children &&
+          node.children.length === 1 &&
+          node.children[0].type === "text" &&
+          node.children[0].value.trim() === ":"
+        ) {
+          if (i > 0 && nodes[i - 1].type === "paragraph") {
+            // Append the colon to the previous paragraph
+            nodes[i - 1].children.push({ type: "text", value: ":" });
+            // Remove the colon-only paragraph
+            nodes.splice(i, 1);
+            // Continue without further processing of this index
+            continue;
+          }
+        }
+        // If the current node has children, recursively process them
+        if (node.children && Array.isArray(node.children)) {
+          mergeColonInChildren(node.children);
         }
       }
     }
+    mergeColonInChildren(tree.children);
   };
 }
 
